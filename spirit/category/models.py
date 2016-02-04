@@ -33,7 +33,15 @@ class Category(models.Model):
         ordering = ['title', 'pk']
         verbose_name = _("category")
         verbose_name_plural = _("categories")
-        default_permissions = ('add', 'change', 'delete', 'read', 'add_topic_to')
+        default_permissions = ('add', 'read', 'change', 'delete')
+        permissions = (
+            ('add_topic_to_category', 'Add topic to a category'),
+        )
+        roles = (
+            ('public', ('read_category', 'add_topic_to_category')),
+            ('admin', ('read_category', 'add_category', 'change_category', 'add_topic_to_category')),
+            ('write', ('read_category', 'change_category', 'add_topic_to_category')),
+        )
 
     def get_absolute_url(self):
         if self.pk == settings.ST_TOPIC_PRIVATE_CATEGORY_PK:
