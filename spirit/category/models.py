@@ -6,12 +6,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from trusts.models import Content, Trust
 
 from .managers import CategoryQuerySet
 from ..core.utils.models import AutoSlugField
 
 
-class Category(models.Model):
+class Category(Content):
 
     parent = models.ForeignKey('self', verbose_name=_("category parent"), null=True, blank=True)
 
@@ -33,6 +34,7 @@ class Category(models.Model):
         ordering = ['title', 'pk']
         verbose_name = _("category")
         verbose_name_plural = _("categories")
+        default_permissions = ('add', 'change', 'delete', 'read', 'add_topic_to')
 
     def get_absolute_url(self):
         if self.pk == settings.ST_TOPIC_PRIVATE_CATEGORY_PK:
